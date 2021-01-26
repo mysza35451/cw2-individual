@@ -72,6 +72,6 @@ app.use("/", express.static(__dirname + "/"));
 // });
 //start the server
 run().catch(console.dir);
-app.listen(8080);
+app.listen(process.env.PORT || 5000) //heroku automatically assigns a port, 5000 alone will cause an timeout
 
 console.log("Server running at: http://localhost:8080");

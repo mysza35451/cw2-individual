@@ -1,6 +1,7 @@
 let webStore = new Vue({
   el: "#app",
   data: {
+    render: false,
     //index page data
     pageTitle: "Lessons to buy",
     classes: arrayOfClasses,
@@ -26,6 +27,8 @@ let webStore = new Vue({
   },
   mounted: function () {
     //allows to execute methods on pageload
+    this.loadLessons();
+
     this.checkLocalStorage();
   },
   watch: {
@@ -41,6 +44,21 @@ let webStore = new Vue({
     },
   },
   methods: {
+    loadLessons: function(){
+const options = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+fetch("/api/lessons", options).then((response) => response.json())
+.then((data) => {
+  this.classes = data;
+  console.log(data)
+  this.render = true;
+});
+
+    },
     initializeSort: function (event) {
       let order = document.getElementById("order").value;
       let attribute = document.getElementById("attribute").value;
@@ -131,7 +149,7 @@ let webStore = new Vue({
         this.populatedLocalStorage = true;
       }
     },
-
+    
     loadBasketPage: function () {
       this.showItems = false;
       this.pageTitle = "Basket";
@@ -210,5 +228,6 @@ let webStore = new Vue({
     loadCheckOut: function () {
       this.displayCheckOut = true;
     },
+    
   },
 });

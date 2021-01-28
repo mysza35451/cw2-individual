@@ -36,7 +36,7 @@
           <button v-on:click="initializeSort">Sort</button>
         </div>
         <ul class="classes">
-          <li v-for="(item, index) in classes" :key="index" class="class">
+          <li v-if="render" v-for="(item, index) in classes" :key="index" class="class">
             <div class="class-box">
               <img class="image" v-bind:src="item.img" alt="" />
               <h1>{{item.subject}}</h1>

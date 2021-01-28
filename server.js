@@ -18,7 +18,7 @@ beginConnection();
 
 
 let arrayOfClasses = [];
-app.post("/api/lessons", async(request, response) => {
+app.get("/api/lessons", async(request, response) => {
   try {
     await client.connect();
     console.log("Connected correctly to server");
@@ -38,14 +38,18 @@ response.json(myDoc);
 
   
 });
-             
-router.post("/lessons",async(req,res)=>{
-        await client.connect();
-         console.log("Connected correctly to server");
-         // Use the collection "people"
-        
-  res.send(myDoc)
+app.put("/api/:id", async(request, response,next) => {
+  const db = client.db(dbName);
+  // Use the collection
+  console.log("search options " + request.body);
+const col = db.collection("Lessons");      
+// Find one document
+const myDoc = await col.findOneAndUpdate({_id: request.params.id}, {subject: "H"}).then(function(col){
+  response.send(myDoc)
 })
+});
+             
+
 
 //start the server
 app.listen(process.env.PORT || 5000) //heroku automatically assigns a port, 5000 alone will cause an timeout

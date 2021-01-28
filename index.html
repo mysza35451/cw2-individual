@@ -44,7 +44,7 @@
               <p>£{{item.price}}</p>
               <p>{{item.spaces}}</p>
 
-              <button v-bind:id="index" v-on:click="addToBasket(index)">
+              <button  v-on:click="addToBasket(item._id, item.spaces)">
                 Add to cart
               </button>
             </div>

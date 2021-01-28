@@ -8,7 +8,7 @@ let webStore = new Vue({
     showItems: true,
     populatedLocalStorage: false,
     addToCartButton: true,
-    showBasketButton: true,
+    showBasketButton: false,
 
     //basket page data
     basketClassesArray: [],
@@ -46,7 +46,7 @@ let webStore = new Vue({
   methods: {
     loadLessons: function(){
 const options = {
-  method: "POST",
+  method: "GET",
   headers: {
     "Content-Type": "application/json",
   },
@@ -121,26 +121,23 @@ fetch("/api/lessons", options).then((response) => response.json())
       }
     },
 
-    addToBasket: function (index) {
-      let indexArray = [];
-
-      if (arrayOfClasses[index].spaces > 0) {
-        this.populatedLocalStorage = true;
-
-        if (localStorage.getItem("basketIndexArray") == undefined) {
-          indexArray = [index];
-          localStorage.basketIndexArray = JSON.stringify(indexArray);
-        } else {
-          indexArray = JSON.parse(localStorage.basketIndexArray);
-          indexArray.push(index);
-          localStorage.basketIndexArray = JSON.stringify(indexArray);
-        }
-        arrayOfClasses[index].spaces--;
-
-        if (arrayOfClasses[index].spaces == 0) {
-          document.getElementById(index).style.display = "none";
-        }
-      }
+    addToBasket: function (id,spaces) {
+     console.log(id)
+     spaces -= 1;
+     let dataArr = [{_id: id,spaces: spaces}];
+     const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        body: JSON.stringify(dataArr),
+      },
+    };
+    fetch("/api/lessons", options).then((response) => response.json())
+    .then((data) => {
+      this.classes = data;
+      console.log(data)
+      this.render = true;
+    });
       this.showBasketButton = true;
     },
     checkLocalStorage: function () {
